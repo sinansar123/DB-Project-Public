@@ -1,68 +1,6 @@
 {% extends "layout_loggedin.html" %}
-{% block title %}Add or browse amps{% endblock %}
 {% block content %}
-    <h1 class="title">Amplifiers</h1>
-<style>
-    th,tr{
-    margin-top: 25px;
-    border: 1px solid black;}
-    table{
-    margin-top: 25px;
-    border: 1px solid black;
-    width: 100%;
-    }
-    td.normal{
-    margin-top: 25px;
-    border: 1px solid black;}
-    }
-    td.hide_border{
-    margin-top: 25px;
-    border-top:hidden
-    border-bottom:hidden;}
-
-    h5 {
-    margin-top: 10px;}
-</style>
-<table class="table">
-  <thead>
-    <tr>
-        <th>Id</th>
-        <th>Bass</th>
-        <th>Mid</th>
-        <th>Treble</th>
-        <th>Volume</th>
-        <th>Master</th>
-        <th>Gain</th>
-        <th>Presence</th>
-        <th>Special EQ</th>
-        <th>Effects</th>
-        <th>Genre</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for setting in setting_array %}
-    <tr>
-        <td class="normal"> {{ setting.id }}</td>
-        <td class="normal"> {{ setting.bass }}</td>
-        <td class="normal"> {{ setting.mid }}</td>
-        <td class="normal"> {{ setting.treble }}</td>
-        <td class="normal"> {{ setting.volume }}</td>
-        <td class="normal"> {{ setting.master }}</td>
-        <td class="normal"> {{ setting.gain }}</td>
-        <td class="normal"> {{ setting.presence }}</td>
-        <td class="normal"> {{ setting.spec_eq }}</td>
-        <td class="normal"> {{ setting.effects }}</td>
-        <td class="normal"> {{ setting.genre }}</td>
-        <td class="hide_border" ><a type="button" class="btn btn-info" href="{{ url_for('edit_settings', setting_id=setting.id) }}">Edit </a></td>
-        <td class="hide_border"> <a type="button" class="btn btn-danger mt-1 mb-1" href="{{ url_for('edit_settings', setting_id=setting.id) }}">Delete</a></td>
-
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
-
-<h5 style="margin-top: 75px">Add a new settings</h5>
-
+<h2 style="margin-top: 75px">Edit Setting</h2>
 <div class="content-section">
     <form method="POST" action="">
         {{ form.hidden_tag() }}
@@ -223,5 +161,5 @@
         </div>
     </form>
 </div>
-
-{% endblock %}
+--
+{% endblock content %}
