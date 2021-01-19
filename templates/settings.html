@@ -1,0 +1,224 @@
+{% extends "layout_loggedin.html" %}
+{% block title %}Add or browse amps{% endblock %}
+{% block content %}
+    <h1 class="title">Amplifiers</h1>
+<style>
+    th,tr{
+    margin-top: 25px;
+    border: 1px solid black;}
+    table{
+    margin-top: 25px;
+    border: 1px solid black;
+    width: 100%;
+    }
+    td.normal{
+    margin-top: 25px;
+    border: 1px solid black;}
+    }
+    td.hide_border{
+    margin-top: 25px;
+    border-top:hidden
+    border-bottom:hidden;}
+
+    h5 {
+    margin-top: 10px;}
+</style>
+<table class="table">
+  <thead>
+    <tr>
+        <th>Id</th>
+        <th>Bass</th>
+        <th>Mid</th>
+        <th>Treble</th>
+        <th>Watts</th>
+        <th>Tubes</th>
+        <th>Microphone Used</th>
+        <th>presence</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for setting in setting_array %}
+    <tr>
+        <td class="normal"><a class="article-title" href="{{ url_for('amps', amp_id=amp.id, amp_array= amp_array) }}">{{ amp.id }}</a></td>
+        <td class="normal"> {{ setting.bass }}</td>
+        <td class="normal"> {{ setting.mid }}</td>
+        <td class="normal"> {{ setting.treble }}</td>
+        <td class="normal"> {{ setting.volume }}</td>
+        <td class="normal"> {{ setting.master }}</td>
+        <td class="normal"> {{ setting.gain }}</td>
+        <td class="normal"> {{ setting.presence }}</td>
+        <td class="normal"> {{ setting.spec_eq }}</td>
+        <td class="normal"> {{ setting.effects }}</td>
+        <td class="normal"> {{ setting.genre }}</td>
+        <td class="hide_border" ><a type="button" class="btn btn-info" href="{{ url_for('edit_settings', setting_id=setting.id) }}">Edit </a></td>
+        <td class="hide_border"> <a type="button" class="btn btn-danger mt-1 mb-1" href="{{ url_for('edit_settings', setting_id=setting.id) }}">Delete</a></td>
+
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h5 style="margin-top: 75px">Add a new settings</h5>
+
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+
+            <!-- Model -->
+            <div class="form-group">
+                {{ form.bass.label(class="form-control-label") }}
+                {% if form.bass.errors %}
+                {{ form.bass(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.bass.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.bass(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- mid -->
+            <div class="form-group">
+                {{ form.mid.label(class="form-control-label") }}
+                {% if form.mid.errors %}
+                {{ form.mid(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.mid.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.mid(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- TREBLE Year -->
+            <div class="form-group">
+                {{ form.treble.label(class="form-control-label") }}
+                {% if form.treble.errors %}
+                {{ form.treble(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.treble.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.treble(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- volume -->
+            <div class="form-group">
+                {{ form.volume.label(class="form-control-label") }}
+                {% if form.volume.errors %}
+                {{ form.volume(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.volume.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.volume(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- master -->
+            <div class="form-group">
+                {{ form.master.label(class="form-control-label") }}
+                {% if form.master.errors %}
+                {{ form.master(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.master.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.master(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- gain -->
+            <div class="form-group">
+                {{ form.gain.label(class="form-control-label") }}
+                {% if form.gain.errors %}
+                {{ form.gain(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.gain.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.gain(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- presence -->
+            <div class="form-group">
+                {{ form.presence.label(class="form-control-label") }}
+                {% if form.presence.errors %}
+                {{ form.presence(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.presence.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.presence(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- spec_eq -->
+            <div class="form-group">
+                {{ form.spec_eq.label(class="form-control-label") }}
+                {% if form.spec_eq.errors %}
+                {{ form.spec_eq(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.spec_eq.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.spec_eq(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- effects -->
+            <div class="form-group">
+                {{ form.effects.label(class="form-control-label") }}
+                {% if form.effects.errors %}
+                {{ form.effects(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.effects.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.effects(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- genre -->
+            <div class="form-group">
+                {{ form.genre.label(class="form-control-label") }}
+                {% if form.genre.errors %}
+                {{ form.genre(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.genre.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.genre(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+
+{% endblock %}

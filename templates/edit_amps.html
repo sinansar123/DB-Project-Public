@@ -1,0 +1,122 @@
+{% extends "layout_loggedin.html" %}
+{% block title %}Add or browse amps{% endblock %}
+{% block content %}
+<h2 style="margin-top: 75px">Edit amplifier</h2>
+
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+
+            <!-- Model -->
+            <div class="form-group">
+                {{ form.model.label(class="form-control-label") }}
+                {% if form.model.errors %}
+                {{ form.model(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.model.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.model(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- Brand -->
+            <div class="form-group">
+                {{ form.brand.label(class="form-control-label") }}
+                {% if form.brand.errors %}
+                {{ form.brand(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.brand.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.brand(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- Production Year -->
+            <div class="form-group">
+                {{ form.prod_year.label(class="form-control-label") }}
+                {% if form.prod_year.errors %}
+                {{ form.prod_year(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.prod_year.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.prod_year(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- watts -->
+            <div class="form-group">
+                {{ form.watts.label(class="form-control-label") }}
+                {% if form.watts.errors %}
+                {{ form.watts(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.watts.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.watts(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- LOCATION -->
+            <div class="form-group">
+                {{ form.tubes.label(class="form-control-label") }}
+                {% if form.tubes.errors %}
+                {{ form.tubes(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.tubes.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.tubes(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- mic -->
+            <div class="form-group">
+                {{ form.mic.label(class="form-control-label") }}
+                {% if form.mic.errors %}
+                {{ form.mic(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.mic.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.mic(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- link -->
+            <div class="form-group">
+                {{ form.link.label(class="form-control-label") }}
+                {% if form.link.errors %}
+                {{ form.link(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.link.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.link(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+
+{% endblock %}

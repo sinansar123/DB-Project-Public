@@ -1,0 +1,19 @@
+<{% extends "layout.html" %}
+{% block title %}add sounds, view your sounds,browse sounds{% endblock %}
+{% block content %}
+    <h1 class="title">Sounds</h1>
+
+    {% if sounds %}
+    <table class="table is-striped is-fullwidth">
+      {% for sound_key, sound in sounds %}
+      <tr>
+        <td>
+            {{ sound.name }},
+            {% if sound.descript %} {{ sound.descript }} {% endif %},
+            {{ sound.genre }}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "layout_loggedin.html" %}
+{% block title %}Add or browse amps{% endblock %}
+{% block content %}
+<h2 style="margin-top: 75px">Edit Instrument</h2>
+
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <!-- type -->
+            <div class="form-group">
+                {{ form.type.label(class="form-control-label") }}
+                {% if form.type.errors %}
+                {{ form.type(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.type.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.type(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- Model -->
+            <div class="form-group">
+                {{ form.model.label(class="form-control-label") }}
+                {% if form.model.errors %}
+                {{ form.model(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.model.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.model(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+
+            <!-- Production Year -->
+            <div class="form-group">
+                {{ form.prod_year.label(class="form-control-label") }}
+                {% if form.prod_year.errors %}
+                {{ form.prod_year(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.prod_year.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.prod_year(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- mods -->
+            <div class="form-group">
+                {{ form.mods.label(class="form-control-label") }}
+                {% if form.mods.errors %}
+                {{ form.mods(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.mods.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.mods(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
+            <!-- link -->
+            <div class="form-group">
+                {{ form.link.label(class="form-control-label") }}
+                {% if form.link.errors %}
+                {{ form.link(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.link.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.link(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+
+{% endblock %}
