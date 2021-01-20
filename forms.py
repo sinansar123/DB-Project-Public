@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField,FloatField,IntegerField
 from wtforms.validators import DataRequired, Length, EqualTo,URL, Optional
 
 
@@ -63,18 +63,28 @@ class AddInstrumentForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class AddSettingForm(FlaskForm):
-    bass = StringField('Bass', validators=[])
-    mid = StringField('Mid', validators=[])
-    treble = StringField('Treble',validators=[])
-    volume = StringField('Volume',validators=[])
-    master = StringField('Master',validators=[])
-    gain = StringField('Gain',validators=[])
-    presence = StringField('Presence', validators=[])
-    spec_eq = StringField('Special EQ',validators=[])
+    bass = FloatField('Bass', validators=[])
+    mid = FloatField('Mid', validators=[])
+    treble = FloatField('Treble',validators=[])
+    volume = FloatField('Volume',validators=[])
+    master = FloatField('Master',validators=[])
+    gain = FloatField('Gain',validators=[])
+    presence = FloatField('Presence', validators=[])
+    spec_eq = FloatField('Special EQ',validators=[])
     effects = StringField('Effects',validators=[])
     genre = StringField('Genre', validators=[])
     submit = SubmitField('Submit')
 
+
+class AddSoundForm(FlaskForm):
+    name = StringField('Name', validators=[])
+    genre = StringField('Genre', validators=[])
+    amp_id = IntegerField('Amplifier ID',validators=[])
+    instrument_id = IntegerField('Instrument ID',validators=[])
+    setting_id = IntegerField('Setting ID',validators=[])
+    descript = StringField('Description',validators=[])
+    sample = StringField('Sample URL', validators=[URL(message='Must be a valid URL'), Optional()])
+    submit = SubmitField('Submit')
 
 class LoginForm(FlaskForm):
     username = StringField('Username',

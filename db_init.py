@@ -102,13 +102,11 @@ cur.execute('''
     setting_id integer,
     descript text,
     sample varchar,
-    song_id integer,
     up_date date DEFAULT CURRENT_DATE, 
     PRIMARY KEY(sound_Id),
     FOREIGN KEY (user_id) REFERENCES USERS(Id) ON DELETE CASCADE,
     FOREIGN KEY (instrument_id) REFERENCES INSTRUMENTS(Id) ON DELETE CASCADE,
     FOREIGN KEY (amp_id) REFERENCES AMPS(Id) ON DELETE CASCADE,
-    FOREIGN KEY (song_id) REFERENCES SONGS(song_id) ON DELETE CASCADE,
     FOREIGN KEY (setting_id) REFERENCES SETTINGS(Id) ON DELETE CASCADE);
 ''')
 

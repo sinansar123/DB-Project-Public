@@ -1,7 +1,7 @@
 from flask_socketio import SocketIO
 from flask.globals import current_app
 import psycopg2
-from forms import RegistrationForm, LoginForm, EditProfileForm, AddAmpForm, AddInstrumentForm,AddSettingForm
+from forms import RegistrationForm, LoginForm, EditProfileForm, AddAmpForm, AddInstrumentForm,AddSettingForm,AddSoundForm
 from flask import Flask, render_template, url_for, flash, redirect
 from flask_login import login_user, current_user, logout_user, login_required
 from database import Database
@@ -11,6 +11,7 @@ from users import User
 from amps import  Amp
 from settingscls import Setting
 from instruments import Instrument
+from sounds import Sound
 import sys
 from passlib.hash import pbkdf2_sha256 as hasher
 
@@ -61,6 +62,41 @@ def profile():
     user = db.get_user(uname)
     return render_template('profile.html',user=user)
 
+@app.route("/sounds/", methods=['GET', 'POST'])
+def sounds():
+    uname = current_user.username
+    user = db.get_user(uname)
+    sound_array = db.get_sounds_by_userid(user)
+    form = AddSoundForm()
+    if form.validate_on_submit():
+        # get data with form
+        sound = Sound(form.name.data,user.id,form.genre.data,form.amp_id.data,form.instrument_id.data,
+                      form.setting_id.data,form.descript.data,form.sample.data)
+        # call method to change necessary values
+        db.add_sound(sound, user)
+        flash(f'Sound added successfully!', 'success')
+        return redirect(url_for('sounds'))
+    return render_template('sounds.html', sound_array=sound_array, form=form)
+
+@app.route("/sounds/<int:sound_id>/", methods=['GET', 'POST'])
+def edit_sounds(sound_id):
+    uname = current_user.username
+    user = db.get_user(uname)
+    now_sound = db.get_sounds_by_userid(sound_id)
+    form = AddSoundForm()
+    if form.validate_on_submit():
+        # get data with form
+        new_sound = Sound(form.name.data, user.id, form.genre.data, form.amp_id.data, form.instrument_id.data,
+                      form.setting_id.data, form.descript.data, form.sample.data)
+        #print(form.model.data, form.brand.data, form.prod_year.data
+        #          , form.watts.data, form.tubes.data, form.mic.data, form.link.data,user.id)
+        # call method to change necessary values
+        db.edit_amp(now_sound,new_sound)
+        flash(f'Sound edited successfully!', 'success')
+        return redirect(url_for('sounds'))
+    return render_template('edit_sounds.html',sound_id=sound_id,form=form)
+
+
 @app.route("/edit_profile/", methods=['GET', 'POST'])
 def edit_profile():
     #get current user
@@ -100,6 +136,11 @@ def amps():
 def delete_amp(amp_id):
     db.delete_amp(amp_id)
     return redirect(url_for('amps'))
+
+@app.route("/sounds/<int:sound_id>/delete", methods=['GET', 'POST'])
+def delete_sound(sound_id):
+    db.delete_sound(sound_id)
+    return redirect(url_for('sounds'))
 
 @app.route("/instruments/<int:instrument_id>/delete", methods=['GET', 'POST'])
 def delete_instrument(instrument_id):

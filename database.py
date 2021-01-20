@@ -505,19 +505,16 @@ class Database:
 
 
 
-    def add_sound(self, sound, user,amp,instrument,setting,song=None):
+    def add_sound(self, sound, user):
         with psycopg2.connect(dbname=self.dbname, user=self.dbuser, password=self.dbpassword) as connection:
             # create a person with given attributes
             cursor = connection.cursor()
-            if song:
-                realsong = song.id
-            else:
-                realsong= None
-            query = """INSERT INTO sounds(name, user_id, genre, amp_id, instrument_id,setting_id,descript,sample,song.id) 
-                    values ( %s, %s, %s, %s, %s ,%s,%s, %s, %s )"""
+
+            query = """INSERT INTO sounds(name,user_id,genre,amp_id,instrument_id,setting_id,descript,sample) 
+                    values (%s, %s, %s, %s, %s ,%s,%s, %s )"""
             try:
-                cursor.execute(query, (sound.name, user.id, sound.genre, amp.id,
-                                       instrument.id, setting.id, sound.descript,sound.sample,realsong))
+                cursor.execute(query, (sound.name, user.id, sound.genre, sound.amp_id,
+                                       sound.instrument_id, sound.setting_id, sound.descript,sound.sample))
                 print("execute works")
                 connection.commit()
                 # created
@@ -526,27 +523,44 @@ class Database:
                 pass
 
     #function to select sound
-    def get_sounds_by_user(self, user):
+    def get_sounds_by_userid(self, user):
         with psycopg2.connect(dbname=self.dbname, user=self.dbuser, password=self.dbpassword) as connection:
             cursor = connection.cursor()
-
+            sound_array = []
             try:
                 query = "SELECT * FROM sounds WHERE (user_id = %s)"
-                cursor.execute(query, (user.id,))
-                sound_attr = cursor.fetchone()
-                print('returned amp with id: {}'.format(sound_attr[0]))
-                ret_sound = Sound(
-                    sound_attr[1], sound_attr[2], sound_attr[3], sound_attr[4],
-                    sound_attr[5], sound_attr[6], sound_attr[7], sound_attr[8], sound_attr[9], sound_attr[10]
-                    , sound_attr[0])
-                return ret_sound
+                cursor.execute(query,(user.id,))
+                sounds = cursor.fetchall()
+                for sound_attr in sounds:
+                    sound_array.append(Sound(
+                        sound_attr[1], sound_attr[2], sound_attr[3], sound_attr[4],
+                        sound_attr[5], sound_attr[6], sound_attr[7], sound_attr[8], sound_attr[9]
+                        , sound_attr[0]))
+                return sound_array
             except:
-
-                print('Error occured while adding sound.')
+                print('Error occured while fetching sound.')
                 pass
 
     # function to select sound
-    def get_sounds_by_name(self, name):
+    def get_sound_by_userid(self, soundid):
+        with psycopg2.connect(dbname=self.dbname, user=self.dbuser, password=self.dbpassword) as connection:
+            cursor = connection.cursor()
+            try:
+                query = "SELECT * FROM sounds WHERE (id = %s)"
+                cursor.execute(query, (soundid,))
+                sound_attr = cursor.fetchone()
+
+                ret_sound =(Sound(
+                        sound_attr[1], sound_attr[2], sound_attr[3], sound_attr[4],
+                        sound_attr[5], sound_attr[6], sound_attr[7], sound_attr[8], sound_attr[9]
+                        , sound_attr[0]))
+                return ret_sound
+            except:
+                print('Error occured while fetching sound.')
+                pass
+
+    # function to select sound
+    def get_sounds_by_username(self, name):
         with psycopg2.connect(dbname=self.dbname, user=self.dbuser, password=self.dbpassword) as connection:
             cursor = connection.cursor()
             setting_array = []
@@ -558,8 +572,8 @@ class Database:
                 for sound_attr in sounds:
                     setting_array.append(Sound(
                         sound_attr[1], sound_attr[2], sound_attr[3], sound_attr[4],
-                        sound_attr[5], sound_attr[6], sound_attr[7], sound_attr[8], sound_attr[9], sound_attr[10]
-                        , sound_attr[0]))
+                        sound_attr[5], sound_attr[6], sound_attr[7],sound_attr[8], sound_attr[9],
+                        sound_attr[0]))
                 return setting_array
             except:
 
@@ -578,7 +592,7 @@ class Database:
                 for sound_attr in sounds:
                     setting_array.append(Sound(
                         sound_attr[1], sound_attr[2], sound_attr[3], sound_attr[4],
-                        sound_attr[5], sound_attr[6], sound_attr[7], sound_attr[8], sound_attr[9], sound_attr[10]
+                        sound_attr[5], sound_attr[6], sound_attr[7], sound_attr[8], sound_attr[9]
                         , sound_attr[0]))
                 return setting_array
             except:
@@ -591,7 +605,7 @@ class Database:
 
             try:
                 # delete user from database
-                query = "DELETE FROM sounds WHERE (id = %s)"
+                query = "DELETE FROM SOUNDS WHERE (id = %s)"
                 cursor.execute(query, (soundid,))
                 print("Deleted setting with id:{}".format(soundid))
                 pass
@@ -632,7 +646,7 @@ class Database:
 #deneme = db.add_user(new_user)
 #print(deneme.id, deneme.name, deneme.username,deneme.password, deneme.location, deneme.about,deneme.genre,deneme.category,deneme.reg_date)
 
-#deneme = db.get_user('LBJ')
+#deneme = db.get_user('newuser')
 #print(deneme.id, deneme.name, deneme.username,deneme.password, deneme.location, deneme.about,deneme.genre,deneme.category,deneme.reg_date)
 
 #new_amp = Amp("Angel", "Randall","2010","100","6l6","SM57","a link","")
@@ -658,19 +672,20 @@ class Database:
 #db.get_sound_by_user(deneme)
 
 #yeni_amfi = Amp("model","marka","tarih","wat","tüp","mic")
-#amp = db.get_amp_by_id("2")
+##amp = db.get_amp_by_id("4")
 #new_amp= db.get_amp_by_id("1")
 #db.edit_amp(amp,new_amp)
 #for amp in amps:
 #print(amp.id, amp.model, amp.brand, amp.prod_year,amp.watts,amp.tubes,amp.mic,amp.link,amp.added_by)
 
-#instrument = db.get_instrument_by_id("1")
+##instrument = db.get_instrument_by_id("3")
 #for instrument in instruments:
 #    print(instrument.id,instrument.type,instrument.model,instrument.prod_year,instrument.mods,instrument.link,
 #         instrument.added_by)
 
 #setting = Setting("1","1","1","1","1","1","1","1","1""1","metal","1")
-#db.add_setting(setting,deneme)
-
-#sound = Sound("Metallica One","1","metal","1","1","1","sick riffing sound","none")
-#db.add_sound(sound,deneme,new_amp,instrument,setting)
+##db.get_setting_by_id("10")
+#print("")
+#sound = db.get_sounds_by_userid(deneme)
+#print(sound[1])
+##db.add_sound(sound,deneme)
