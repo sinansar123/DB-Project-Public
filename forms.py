@@ -65,21 +65,14 @@ class AddInstrumentForm(FlaskForm):
 class AddSettingForm(FlaskForm):
     bass = StringField('Bass', validators=[])
     mid = StringField('Mid', validators=[])
-    treble = StringField('Treble',
-                            validators=[])
-    volume = StringField('Volume',
-                        validators=[])
-    master = StringField('Master',
-                        validators=[])
-    gain = StringField('Gain',
-                      validators=[])
+    treble = StringField('Treble',validators=[])
+    volume = StringField('Volume',validators=[])
+    master = StringField('Master',validators=[])
+    gain = StringField('Gain',validators=[])
     presence = StringField('Presence', validators=[])
-    spec_eq = StringField('Special EQ',
-                       validators=[])
-    effects = StringField('Effects',
-                          validators=[]),
-    genre = StringField('Genre',  validators=[])
-
+    spec_eq = StringField('Special EQ',validators=[])
+    effects = StringField('Effects',validators=[])
+    genre = StringField('Genre', validators=[])
     submit = SubmitField('Submit')
 
 

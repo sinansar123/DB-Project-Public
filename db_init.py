@@ -26,7 +26,7 @@ cur.execute('''
     Id serial , 
     band varchar, 
     label varchar,
-    FOREIGN KEY (Id) REFERENCES Users(Id));''')
+    FOREIGN KEY (Id) REFERENCES Users(Id) ON DELETE CASCADE);''')
 print("Table created successfully")
 
 cur.execute('''
@@ -35,7 +35,7 @@ cur.execute('''
     email varchar , 
     phone varchar, 
     section varchar,
-    FOREIGN KEY (Id) REFERENCES USERS(Id));
+    FOREIGN KEY (Id) REFERENCES USERS(Id) ON DELETE CASCADE);
     ''')
 cur.execute('''
     CREATE TABLE IF NOT EXISTS INSTRUMENTS(
@@ -47,7 +47,7 @@ cur.execute('''
     link varchar,
     added_by integer,
     PRIMARY KEY(Id),
-    FOREIGN KEY (added_by) REFERENCES USERS(Id));
+    FOREIGN KEY (added_by) REFERENCES USERS(Id) ON DELETE CASCADE);
     ''')
 cur.execute('''
     CREATE TABLE IF NOT EXISTS AMPS(
@@ -61,7 +61,7 @@ cur.execute('''
     link varchar,
     added_by int,
     PRIMARY KEY(Id),
-    FOREIGN KEY (added_by) REFERENCES USERS(Id));
+    FOREIGN KEY (added_by) REFERENCES USERS(Id) ON DELETE CASCADE);
     ''')
 cur.execute('''
     CREATE TABLE IF NOT EXISTS SONGS(
@@ -72,7 +72,7 @@ cur.execute('''
     label varchar,
     artist_id integer,
     PRIMARY KEY(song_Id),
-    FOREIGN KEY (artist_id) REFERENCES USERS(Id));
+    FOREIGN KEY (artist_id) REFERENCES USERS(Id) ON DELETE CASCADE);
     ''')
 cur.execute('''
     CREATE TABLE IF NOT EXISTS SETTINGS(
@@ -89,7 +89,7 @@ cur.execute('''
     genre   varchar,
     added_by integer,
     PRIMARY KEY(Id),
-    FOREIGN KEY (added_by) REFERENCES USERS(Id));
+    FOREIGN KEY (added_by) REFERENCES USERS(Id) ON DELETE CASCADE);
     ''')
 cur.execute('''
     CREATE TABLE IF NOT EXISTS SOUNDS(
@@ -102,16 +102,14 @@ cur.execute('''
     setting_id integer,
     descript text,
     sample varchar,
-    grade float,
-    grade_count int,
     song_id integer,
     up_date date DEFAULT CURRENT_DATE, 
     PRIMARY KEY(sound_Id),
-    FOREIGN KEY (user_id) REFERENCES USERS(Id),
-    FOREIGN KEY (instrument_id) REFERENCES INSTRUMENTS(Id),
-    FOREIGN KEY (amp_id) REFERENCES AMPS(Id),
-    FOREIGN KEY (song_id) REFERENCES SONGS(song_id),
-    FOREIGN KEY (setting_id) REFERENCES SETTINGS(Id));
+    FOREIGN KEY (user_id) REFERENCES USERS(Id) ON DELETE CASCADE,
+    FOREIGN KEY (instrument_id) REFERENCES INSTRUMENTS(Id) ON DELETE CASCADE,
+    FOREIGN KEY (amp_id) REFERENCES AMPS(Id) ON DELETE CASCADE,
+    FOREIGN KEY (song_id) REFERENCES SONGS(song_id) ON DELETE CASCADE,
+    FOREIGN KEY (setting_id) REFERENCES SETTINGS(Id) ON DELETE CASCADE);
 ''')
 
 con.commit()

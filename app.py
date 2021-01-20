@@ -52,7 +52,8 @@ def landing_page():
 
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    sound_array = db.get_all_sounds()
+    return render_template('home.html',sound_array=sound_array)
 
 @app.route("/profile/", methods=['GET', 'POST'])
 def profile():
@@ -95,6 +96,27 @@ def amps():
         return redirect(url_for('amps'))
     return render_template('amps.html',amp_array=amp_array,form=form)
 
+@app.route("/amps/<int:amp_id>/delete", methods=['GET', 'POST'])
+def delete_amp(amp_id):
+    db.delete_amp(amp_id)
+    return redirect(url_for('amps'))
+
+@app.route("/instruments/<int:instrument_id>/delete", methods=['GET', 'POST'])
+def delete_instrument(instrument_id):
+    db.delete_instrument(instrument_id)
+    return redirect(url_for('instruments'))
+
+@app.route("/settings/<int:setting_id>/delete", methods=['GET', 'POST'])
+def delete_setting(setting_id):
+    db.delete_setting(setting_id)
+    return redirect(url_for('settings'))
+
+@app.route("/profile/delete", methods=['GET', 'POST'])
+def delete_profile():
+    db.delete_user(current_user.username)
+    logout_user()
+    flash("Your account has been deleted.", "success")
+    return redirect(url_for('landing_page'))
 
 @app.route("/amps/<int:amp_id>/", methods=['GET', 'POST'])
 def edit_amps(amp_id):
@@ -123,13 +145,16 @@ def instruments():
     instrument_array = db.get_all_instruments_by_user(user)
     form = AddInstrumentForm()
     if form.validate_on_submit():
-        # get data with form
-        instru = Instrument(form.type.data, form.model.data, form.prod_year.data
-                  , form.mods.data, form.link.data, user.id)
-        # call method to change necessary values
-        db.add_instrument(instru, user)
-        flash(f'Amp added successfully!', 'success')
-        return redirect(url_for('instruments'))
+         try:
+            # get data with form
+            instru = Instrument(form.type.data, form.model.data, form.prod_year.data
+                      , form.mods.data, form.link.data, user.id)
+            # call method to change necessary values
+            db.add_instrument(instru, user)
+            flash(f'Amp added successfully!', 'success')
+            return redirect(url_for('instruments'))
+         except:
+             flash(f'An error occured while adding, try again.', "danger")
     return render_template('instruments.html',instrument_array=instrument_array,form=form)
 
 
@@ -141,15 +166,18 @@ def edit_instruments(instrument_id):
     print(res.id, res.type, res.model, res.prod_year, res.mods, res.link, res.added_by)
     form = AddInstrumentForm()
     if form.validate_on_submit():
-        # get data with form
-        new_instru = Instrument(form.type.data, form.model.data, form.prod_year.data
-                      , form.mods.data, form.link.data, user.id)
-        # print(form.model.data, form.brand.data, form.prod_year.data
-        #          , form.watts.data, form.tubes.data, form.mic.data, form.link.data,user.id)
-        # call method to change necessary values
-        db.edit_instrument(res, new_instru)
-        flash(f'Instrument edited successfully!', 'success')
-        return redirect(url_for('instruments'))
+        try:
+            # get data with form
+            new_instru = Instrument(form.type.data, form.model.data, form.prod_year.data
+                          , form.mods.data, form.link.data, user.id)
+            # print(form.model.data, form.brand.data, form.prod_year.data
+            #          , form.watts.data, form.tubes.data, form.mic.data, form.link.data,user.id)
+            # call method to change necessary values
+            db.edit_instrument(res, new_instru)
+            flash(f'Instrument edited successfully!', 'success')
+            return redirect(url_for('instruments'))
+        except:
+            flash(f'An error occured while editing, try again.', "danger")
     return render_template('edit_instruments.html', instrument_id=instrument_id, form=form)
 
 @app.route("/settings/", methods=['GET', 'POST'])
@@ -157,51 +185,64 @@ def settings():
     uname = current_user.username
     user = db.get_user(uname)
     setting_array = db.get_all_settings_by_user(user)
-    form = AddSettingForm()                                 ####PREPARE FORM!
+    form = AddSettingForm()
     if form.validate_on_submit():
-        # get data with form
-        instru = Setting(form.bass.data, form.mid.data, form.treble.data
-                  , form.mods.data, form.link.data, user.id)
-        # call method to change necessary values
-        db.add_instrument(instru, user)
-        flash(f'Amp added successfully!', 'success')
-        return redirect(url_for('settings'))
+        try:
+            # get data with form
+            setting = Setting(form.bass.data, form.mid.data, form.treble.data
+                      , form.volume.data, form.master.data, form.gain.data,
+                              form.presence.data,form.spec_eq.data,form.effects.data,
+                              form.genre.data,user.id)
+            # call method to change necessary values
+            db.add_setting(setting, user)
+            flash(f'Setting added successfully!', 'success')
+            return redirect(url_for('settings'))
+        except:
+            flash(f'An error occured while adding, try again.', "danger")
     return render_template('settings.html',setting_array=setting_array,form=form)
 
 
 @app.route("/settings/<int:setting_id>/", methods=['GET', 'POST'])
 def edit_settings(setting_id):
+
     uname = current_user.username
     user = db.get_user(uname)
-    res = db.get_instrument_by_id(instrument_id)
-    print(res.id, res.type, res.model, res.prod_year, res.mods, res.link, res.added_by)
-    form = AddInstrumentForm()
+    res = db.get_setting_by_id(setting_id)
+
+    form = AddSettingForm()
     if form.validate_on_submit():
-        # get data with form
-        new_instru = Instrument(form.type.data, form.model.data, form.prod_year.data
-                      , form.mods.data, form.link.data, user.id)
-        # print(form.model.data, form.brand.data, form.prod_year.data
-        #          , form.watts.data, form.tubes.data, form.mic.data, form.link.data,user.id)
-        # call method to change necessary values
-        db.edit_instrument(res, new_instru)
-        flash(f'Instrument edited successfully!', 'success')
-        return redirect(url_for('instruments'))
-    return render_template('edit_instruments.html', instrument_id=instrument_id, form=form)
+        try:
+            # get data with form
+            new_setting = Setting(form.bass.data, form.mid.data, form.treble.data
+                          , form.volume.data, form.master.data, form.gain.data, form.presence.data, form.spec_eq.data
+                                  , form.effects.data, form.genre.data, user.id)
+
+            # call method to change necessary values
+            db.edit_setting(res, new_setting)
+            flash(f'Setting edited successfully!', 'success')
+
+            return redirect(url_for('settings'))
+        except:
+            flash(f'An error occured while editing, try again.', "danger")
+    return render_template('edit_settings.html', setting_id=setting_id, form=form)
 
 @app.route("/register/", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        password = hasher.hash(form.password.data)
-        user = User(form.name.data,form.username.data,password,form.location.data
-                        ,form.about.data,form.genre.data)
-        #print(deneme.id, deneme.name, deneme.username,deneme.password, deneme.location, deneme.category,deneme.genre,deneme.about)
+        try:
+            password = hasher.hash(form.password.data)
+            user = User(form.name.data,form.username.data,password,form.location.data
+                            ,form.about.data,form.genre.data)
+            #print(deneme.id, deneme.name, deneme.username,deneme.password, deneme.location, deneme.category,deneme.genre,deneme.about)
 
-        temp = db.add_user(user)
+            temp = db.add_user(user)
 
-        #flash(f'An error occured while registering, try again.')
-        flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('login'))
+            #
+            flash(f'Account created for {form.username.data}!', 'success')
+            return redirect(url_for('login'))
+        except:
+            flash(f'An error occured while registering, try again.',"danger")
     return render_template('register.html', title='Register', form=form)
 
 
@@ -237,6 +278,7 @@ def login():
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
+
 
 @app.route("/logout")
 def logout():

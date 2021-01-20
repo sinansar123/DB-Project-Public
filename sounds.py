@@ -1,6 +1,6 @@
 class Sound:
-    def __init__(self, name, user_id, genre, amp_id, instrument_id, setting_id, descript, sample, grade,
-                 grade_count, song_id=None, up_date=None,id=None):
+    def __init__(self, name, user_id, genre, amp_id, instrument_id, setting_id, descript, sample,
+                 song_id=None, up_date=None,id=None):
         self.id = id
         self.name = name
         self.user_id = user_id
@@ -10,8 +10,6 @@ class Sound:
         self.setting_id = setting_id
         self.descript = descript
         self.sample= sample
-        self.grade = grade
-        self.grade_count = grade_count
         self.song_id = song_id
         self.up_date = up_date
 
