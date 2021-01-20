@@ -82,7 +82,7 @@ def sounds():
 def edit_sounds(sound_id):
     uname = current_user.username
     user = db.get_user(uname)
-    now_sound = db.get_sounds_by_userid(sound_id)
+    now_sound = db.get_sound_by_id(sound_id)
     form = AddSoundForm()
     if form.validate_on_submit():
         # get data with form
@@ -91,7 +91,7 @@ def edit_sounds(sound_id):
         #print(form.model.data, form.brand.data, form.prod_year.data
         #          , form.watts.data, form.tubes.data, form.mic.data, form.link.data,user.id)
         # call method to change necessary values
-        db.edit_amp(now_sound,new_sound)
+        db.edit_sound(now_sound,new_sound)
         flash(f'Sound edited successfully!', 'success')
         return redirect(url_for('sounds'))
     return render_template('edit_sounds.html',sound_id=sound_id,form=form)

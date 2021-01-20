@@ -522,13 +522,67 @@ class Database:
                 print(psycopg2.Error.pgerror)
                 pass
 
+    def edit_sound(self, old_sound, new_sound):
+        with psycopg2.connect(dbname=self.dbname, user=self.dbuser, password=self.dbpassword) as connection:
+            cursor = connection.cursor()
+
+            if new_sound.name:
+                name = new_sound.name
+            else:
+                name = old_sound.name
+
+            if new_sound.genre:
+                genre = new_sound.genre
+            else:
+                genre = old_sound.genre
+
+            if new_sound.user_id:
+                user_id = new_sound.user_id
+            else:
+                user_id = old_sound.user_id
+
+            if new_sound.amp_id:
+                amp_id = new_sound.amp_id
+            else:
+                amp_id = old_sound.amp_id
+            if new_sound.instrument_id:
+                instrument_id = new_sound.instrument_id
+            else:
+                instrument_id = old_sound.instrument_id
+            if new_sound.setting_id:
+                setting_id = new_sound.setting_id
+            else:
+                setting_id = old_sound.setting_id
+            if new_sound.descript:
+                descript = new_sound.descript
+            else:
+                descript = old_sound.descript
+            if new_sound.sample:
+                sample = new_sound.sample
+            else:
+                sample = old_sound.sample
+
+            query = """UPDATE SOUNDS SET name=%s, user_id=%s, genre=%s, amp_id=%s, 
+                        instrument_id=%s, setting_id=%s, descript=%s, sample=%s, up_date=%s where (sound_Id=%s) """
+
+            try:
+                cursor.execute(query, (name, user_id, genre, amp_id, instrument_id, setting_id, descript,
+                                       sample, new_sound.up_date, new_sound.id))
+                print("execute works")
+
+                connection.commit()
+                print("COMMIT NEW AMP")
+            except:
+                print('Error occured while editing sound')
+                pass
+
     #function to select sound
     def get_sounds_by_userid(self, user):
         with psycopg2.connect(dbname=self.dbname, user=self.dbuser, password=self.dbpassword) as connection:
             cursor = connection.cursor()
             sound_array = []
             try:
-                query = "SELECT * FROM sounds WHERE (user_id = %s)"
+                query = 'SELECT * FROM sounds WHERE (user_id = %s)'
                 cursor.execute(query,(user.id,))
                 sounds = cursor.fetchall()
                 for sound_attr in sounds:
@@ -542,11 +596,11 @@ class Database:
                 pass
 
     # function to select sound
-    def get_sound_by_userid(self, soundid):
+    def get_sound_by_id(self, soundid):
         with psycopg2.connect(dbname=self.dbname, user=self.dbuser, password=self.dbpassword) as connection:
             cursor = connection.cursor()
             try:
-                query = "SELECT * FROM sounds WHERE (id = %s)"
+                query = "SELECT * FROM sounds WHERE (sound_Id = %s)"
                 cursor.execute(query, (soundid,))
                 sound_attr = cursor.fetchone()
 
@@ -605,16 +659,15 @@ class Database:
 
             try:
                 # delete user from database
-                query = "DELETE FROM SOUNDS WHERE (id = %s)"
-                cursor.execute(query, (soundid,))
+                query = "DELETE FROM sounds WHERE (sound_Id = %s)"
+                cursor.execute(query,(soundid,))
                 print("Deleted setting with id:{}".format(soundid))
                 pass
             except:
                 print('Error: User does not exist.')
                 pass
 #
-#       TODO : delete methods for everything, fix sound methods, add songs, implement different logintypes
-#       TODO : survive?, Add better user interface, deploy
+#
 #
 #
         """
@@ -640,7 +693,7 @@ class Database:
                 INSERT INTO ADMINISTRATOR (email. phone,section)   
         """
 
-#db = Database('findyourtone', 'postgres', 'qweqweqwe')
+db = Database('findyourtone', 'postgres', 'qweqweqwe')
 #new_user = User('OLDNEWUser', 'newuser74','$pbkdf2-sha256$29000$sZayFmKMcU4JAeAc43zvnQ$iQaR7DLD43ahS1aL2MC7ayHgCvfi8MrAap.8ATLkXyw','USa','Love Death!:)!','POP')
 #
 #deneme = db.add_user(new_user)
@@ -689,3 +742,8 @@ class Database:
 #sound = db.get_sounds_by_userid(deneme)
 #print(sound[1])
 ##db.add_sound(sound,deneme)
+#db.delete_sound(15)
+#old =db.get_sound_by_id(11)
+#new =db.get_sound_by_id(18)
+#db.edit_sound(old,new)
+print()
