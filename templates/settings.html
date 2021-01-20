@@ -54,7 +54,7 @@
         <td class="normal"> {{ setting.effects }}</td>
         <td class="normal"> {{ setting.genre }}</td>
         <td class="hide_border" ><a type="button" class="btn btn-info" href="{{ url_for('edit_settings', setting_id=setting.id) }}">Edit </a></td>
-        <td class="hide_border"> <a type="button" class="btn btn-danger mt-1 mb-1" href="{{ url_for('edit_settings', setting_id=setting.id) }}">Delete</a></td>
+        <td class="hide_border"> <a type="button" class="btn btn-danger mt-1 mb-1" href="{{ url_for('delete_setting', setting_id=setting.id) }}">Delete</a></td>
 
     </tr>
   {% endfor %}

@@ -9,4 +9,67 @@
         </div>
       </div>
     </section>
+
+<style>
+    th,tr{
+    margin-top: 25px;
+    border: 1px solid black;}
+    table{
+    margin-top: 25px;
+    border: 1px solid black;
+    width: 100%;
+    }
+    td.normal{
+    margin-top: 25px;
+    border: 1px solid black;}
+    }
+    td.hide_border{
+    margin-top: 25px;
+    border-top:hidden
+    border-bottom:hidden;}
+
+    h5 {
+    margin-top: 10px;}
+</style>
+<table class="table">
+  <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>User ID</th>
+        <th>Genre</th>
+        <th>Amp ID</th>
+        <th>Instrument ID</th>
+        <th>Setting ID</th>
+        <th>Description</th>
+        <th>Sample</th>
+        <th>Upload Date</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for sound in sound_array %}
+    <tr>
+        <td class="normal">{{ sound.id }}</a></td>
+        <td class="normal"> {{ sound.name }}</td>
+        <td class="normal"> {{ sound.use_id }}</td>
+        <td class="normal"> {{ sound.genre }}</td>
+        <td class="normal"> {{ sound.amp_id }}</td>
+        <td class="normal"> {{ sound.instrument_id }}</td>
+        <td class="normal"> {{ sound.setting_id }}</td>
+        <td class="normal"> {{ sound.descript }}</td>
+        <td class="normal"> {{ sound.sample }}</td>
+        <td class="normal"> {{ sound.up_date }}</td>
+        <!--
+        <td class="hide_border" ><a type="button" class="btn btn-info"
+                                    href="{{ url_for('edit_instruments', instrument_id=instrument.id) }}">Edit </a></td>
+        <td class="hide_border"> <a type="button" class="btn btn-danger mt-1 mb-1"
+                                    href="{{ url_for('edit_instruments', instrument_id=instrument.id) }}">Delete</a></td>
+        -->
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
+
 {% endblock %}
